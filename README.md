@@ -1,43 +1,35 @@
-# diffsite
-Tool to visually compare two versions of a website.
+# diffsite static
 
-## Credits
-Inspired by
-- http://diffee.me/
-- https://glitch.com/~amp-visual-compare
-- https://antoinebr.github.io/compareAMP/
-- https://help.github.com/en/articles/rendering-and-diffing-images#viewing-differences
+2つのWebサイトを視覚比較する、ビルド不要の静的ツールです。`static/index.html` をブラウザで開くだけで使えます。
 
-## Feature wishlist / backlog
-- Add configurable iframe proxy in advanced settings
-- Add fallback to screenshots via puppeteer
-- Back-to-top button
+## 使い方
 
-## Development
-Project based on [webpack-starter](https://github.com/wbkd/webpack-starter).
+1. `static/index.html` を開きます。
+2. 比較元URLと比較先URLを入力します。
+3. 必要に応じて Basic認証を有効にし、ユーザー名とパスワードを入力します。
+4. 表示サイズ、ページ全体の高さ、比較モードを選びます。
+5. `読み込み` を押して比較します。
 
-### Installation
+## 比較機能
 
-```
-npm install
-```
+- 横並び表示
+- 重ね合わせ表示
+- onion 表示
+- swipe 表示
+- 差分表示
+- ファーストビュー線
+- 左右ページの縦位置調整
+- 比較先ページの横位置調整
+- PC/SP向けプリセット
 
-### Start Dev Server
+## Basic認証について
 
-```
-npm start
-```
+静的HTMLでは iframe に任意の `Authorization` ヘッダーを付けられません。このツールは `https://user:pass@example.com/` 形式のURLを生成して読み込みます。
 
-### Build Prod Version
+対象サイトやブラウザが userinfo 付きURLを拒否する場合や、`X-Frame-Options` / `Content-Security-Policy` によって iframe 表示が禁止されている場合は、ブラウザ側だけでは表示できません。その場合はサーバー側プロキシが必要です。
 
-```
-npm run build
-```
+## ファイル構成
 
-### Features:
-
-* ES6 Support via [babel](https://babeljs.io/) (v7)
-* SASS Support via [sass-loader](https://github.com/jtangelder/sass-loader)
-* Linting via [eslint-loader](https://github.com/MoOx/eslint-loader)
-
-When you run `npm run build` we use the [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin) to move the css to a separate file. The css file gets included in the head of the `index.html`.
+- `static/index.html`: 画面構造
+- `static/styles.css`: スタイル
+- `static/app.js`: URL生成、表示切り替え、位置調整

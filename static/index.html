@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ビルド不要で使える、2つのWebサイトの静的ビジュアル比較ツール。">
+  <title>diffsite static - Webサイト比較ツール</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#comparison">比較エリアへ移動</a>
+  <div class="mobile-warning" role="alert">
+    このツールはPCでの利用を想定しています。スマートフォンでは表示や操作が崩れる可能性があります。
+  </div>
+
+  <header class="hero">
+    <nav class="top-links" aria-label="ページ内リンク">
+      <a href="#settings">設定</a>
+      <a href="#notes">制限事項</a>
+    </nav>
+    <h1>diff<span>site</span></h1>
+    <p class="intro">2つのサイトを横並び、重ね合わせ、スワイプ、差分表示で比較できます。静的ファイルだけで動作し、Basic認証付きURLにも対応します。</p>
+  </header>
+
+  <section class="url-inputs" aria-label="比較するURL">
+    <div class="url-panel">
+      <label for="left-url">比較元URL</label>
+      <input id="left-url" type="url" placeholder="https://example.com" autocomplete="url">
+      <label class="check-row">
+        <input id="left-auth-enabled" type="checkbox">
+        Basic認証を使う
+      </label>
+      <div class="auth-grid">
+        <label for="left-user">ユーザー名
+          <input id="left-user" type="text" autocomplete="username">
+        </label>
+        <label for="left-pass">パスワード
+          <input id="left-pass" type="password" autocomplete="current-password">
+        </label>
+      </div>
+    </div>
+
+    <div class="versus" aria-hidden="true">vs.</div>
+
+    <div class="url-panel">
+      <label for="right-url">比較先URL</label>
+      <input id="right-url" type="url" placeholder="https://example.com" autocomplete="url">
+      <label class="check-row">
+        <input id="right-auth-enabled" type="checkbox">
+        Basic認証を使う
+      </label>
+      <div class="auth-grid">
+        <label for="right-user">ユーザー名
+          <input id="right-user" type="text" autocomplete="username">
+        </label>
+        <label for="right-pass">パスワード
+          <input id="right-pass" type="password" autocomplete="current-password">
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section id="settings" class="settings-panel" aria-label="表示設定">
+    <div class="config-grid">
+      <label for="viewport">表示サイズ
+        <select id="viewport">
+          <option value="375x667">iPhone 6/7/8 - 375 x 667</option>
+          <option value="390x844">iPhone 12/13 - 390 x 844</option>
+          <option value="768x1024">iPad - 768 x 1024</option>
+          <option value="1280x720">PC - 1280 x 720</option>
+          <option value="1366x768" selected>PC - 1366 x 768</option>
+          <option value="1440x900">PC - 1440 x 900</option>
+          <option value="1920x1080">PC - 1920 x 1080</option>
+        </select>
+      </label>
+
+      <label for="page-height">ページ全体の高さ
+        <input id="page-height" type="number" min="800" max="20000" step="100" value="3200">
+      </label>
+
+      <fieldset>
+        <legend>比較モード</legend>
+        <div class="toggle">
+          <input type="radio" name="display-mode" value="side" id="mode-side" checked>
+          <label for="mode-side">横並び</label>
+          <input type="radio" name="display-mode" value="overlay" id="mode-overlay">
+          <label for="mode-overlay">重ね合わせ</label>
+        </div>
+      </fieldset>
+
+      <fieldset id="overlay-group">
+        <legend>重ね合わせ</legend>
+        <div class="toggle three">
+          <input type="radio" name="overlay-mode" value="swipe" id="overlay-swipe">
+          <label for="overlay-swipe">swipe</label>
+          <input type="radio" name="overlay-mode" value="difference" id="overlay-difference">
+          <label for="overlay-difference">差分</label>
+          <input type="radio" name="overlay-mode" value="onion" id="overlay-onion" checked>
+          <label for="overlay-onion">onion</label>
+        </div>
+      </fieldset>
+
+      <label for="amount">透明度 / swipe位置
+        <input id="amount" type="range" min="0" max="100" value="50">
+      </label>
+
+      <label for="right-shift-x">比較先の横位置
+        <input id="right-shift-x" type="number" min="-5000" max="5000" step="1" value="0">
+      </label>
+
+      <button id="load" type="button">読み込み</button>
+    </div>
+    <div id="sticky-x-scroll" class="sticky-x-scroll" aria-label="比較エリアの横スクロール" role="group">
+      <div id="sticky-x-scroll-inner"></div>
+    </div>
+  </section>
+
+  <main id="comparison" class="comparison-layout" data-mode="side">
+    <aside class="shift-panel shift-panel-left" aria-label="比較元の縦位置調整">
+      <button class="shift-button" type="button" data-shift="left" data-step="-1" aria-label="比較元を上へ1px移動">↑</button>
+      <div class="shift-input">
+        <input id="left-shift-y" type="number" min="-20000" max="20000" step="1" value="0">
+        <label for="left-shift-y">左 px</label>
+      </div>
+      <button class="shift-button" type="button" data-shift="left" data-step="1" aria-label="比較元を下へ1px移動">↓</button>
+    </aside>
+
+    <section id="stage" class="stage" data-mode="side" data-overlay="onion" aria-label="比較プレビュー">
+      <div class="status-row">
+        <output id="left-status">未読み込み</output>
+        <output id="right-status">未読み込み</output>
+      </div>
+      <div class="frame-card left-card">
+        <iframe id="left-frame" title="比較元サイト" scrolling="no"></iframe>
+        <hr class="device-height-line">
+      </div>
+      <div class="frame-card right-card">
+        <iframe id="right-frame" title="比較先サイト" scrolling="no"></iframe>
+        <hr class="device-height-line">
+      </div>
+      <div id="swipe-handle" class="swipe-handle" role="slider" aria-label="swipe位置" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0"></div>
+    </section>
+
+    <aside class="shift-panel shift-panel-right" aria-label="比較先の縦位置調整">
+      <button class="shift-button" type="button" data-shift="right" data-step="-1" aria-label="比較先を上へ1px移動">↑</button>
+      <div class="shift-input">
+        <input id="right-shift-y" type="number" min="-20000" max="20000" step="1" value="0">
+        <label for="right-shift-y">右 px</label>
+      </div>
+      <button class="shift-button" type="button" data-shift="right" data-step="1" aria-label="比較先を下へ1px移動">↓</button>
+    </aside>
+  </main>
+
+  <section id="notes" class="notes">
+    <h2>制限事項</h2>
+    <p>静的HTMLでは iframe に任意の Authorization ヘッダーを付けられません。このツールは <code>https://user:pass@example.com/</code> 形式のURLを生成して読み込みます。ブラウザや対象サイトのポリシーで userinfo 付きURLが拒否される場合があります。</p>
+    <p>X-Frame-Options や Content-Security-Policy によって iframe 表示が禁止されているサイトは、ブラウザ側だけでは表示できません。その場合はサーバー側プロキシが必要です。</p>
+  </section>
+
+  <footer class="footer">認証情報は保存しません。ただし読み込み先URLには認証情報が含まれるため、共有画面や録画では注意してください。</footer>
+</body>
+</html>
