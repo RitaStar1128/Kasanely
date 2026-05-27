@@ -3,16 +3,55 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="ビルド不要で使える、2つのWebサイトの静的ビジュアル比較ツール。">
-  <title>diffsite static - Webサイト比較ツール</title>
+  <meta name="description" content="Kasanelyは、2つのWebサイトを横並び・重ね合わせ・スワイプ・差分表示で比較できる、ビルド不要の静的HTMLツールです。Basic認証付きURLにも対応します。">
+  <meta name="application-name" content="Kasanely">
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+  <meta name="googlebot" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+  <meta name="bingbot" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+  <meta name="theme-color" content="#f8fafc">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:site_name" content="Kasanely">
+  <meta property="og:title" content="Kasanely - Webサイト比較・重ね合わせチェックツール">
+  <meta property="og:description" content="URLを指定した2つのWebページを、横並び・重ね合わせ・スワイプ・差分表示で確認できる静的HTMLツール。Basic認証付きURLにも対応します。">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kasanely - Webサイト比較・重ね合わせチェックツール">
+  <meta name="twitter:description" content="2つのWebページを視覚比較できる、ビルド不要の静的HTMLツール。">
+  <title>Kasanely - Webサイト比較・重ね合わせチェックツール</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["WebApplication", "SoftwareApplication"],
+    "name": "Kasanely",
+    "alternateName": "Webサイト比較・重ね合わせチェックツール",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "inLanguage": "ja",
+    "isAccessibleForFree": true,
+    "description": "Kasanelyは、URLを指定した2つのWebページを横並び・重ね合わせ・スワイプ・差分表示で比較できる、ビルド不要の静的HTMLツールです。Basic認証付きURLにも対応します。",
+    "featureList": [
+      "Webサイトの横並び比較",
+      "Webページの重ね合わせ比較",
+      "スワイプ表示と差分表示",
+      "フルページ表示",
+      "Basic認証付きURLの読み込み",
+      "比較対象ページの縦横位置調整"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
   <script src="./app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#comparison">比較エリアへ移動</a>
   <div class="mobile-warning" role="alert">
-    このツールはPCでの利用を想定しています。スマートフォンでは表示や操作が崩れる可能性があります。
+    KasanelyはPCでの利用を想定しています。スマートフォンでは表示や操作が崩れる可能性があります。
   </div>
 
   <header class="hero">
@@ -20,8 +59,8 @@
       <a href="#settings">設定</a>
       <a href="#notes">制限事項</a>
     </nav>
-    <h1>diff<span>site</span></h1>
-    <p class="intro">2つのサイトを横並び、重ね合わせ、スワイプ、差分表示で比較できます。静的ファイルだけで動作し、Basic認証付きURLにも対応します。</p>
+    <h1>Kasanely</h1>
+    <p class="intro">2つのWebサイトを横並び、重ね合わせ、スワイプ、差分表示で比較できます。静的ファイルだけで動作し、Basic認証付きURLにも対応します。</p>
   </header>
 
   <section class="url-inputs" aria-label="比較するURL">
@@ -155,10 +194,10 @@
 
   <section id="notes" class="notes">
     <h2>制限事項</h2>
-    <p>静的HTMLでは iframe に任意の Authorization ヘッダーを付けられません。このツールは <code>https://user:pass@example.com/</code> 形式のURLを生成して読み込みます。ブラウザや対象サイトのポリシーで userinfo 付きURLが拒否される場合があります。</p>
-    <p>X-Frame-Options や Content-Security-Policy によって iframe 表示が禁止されているサイトは、ブラウザ側だけでは表示できません。その場合はサーバー側プロキシが必要です。</p>
+    <p>Kasanelyは静的HTMLツールのため、iframeに任意のAuthorizationヘッダーは付けられません。Basic認証は <code>https://user:pass@example.com/</code> 形式のURLを生成して読み込みます。認証情報がURLに含まれるため、公開画面や録画での利用には注意してください。</p>
+    <p>X-Frame-OptionsやContent-Security-Policyによってiframe表示が禁止されているサイトは、ブラウザ側だけでは表示できません。その場合はサーバー側プロキシが必要です。</p>
   </section>
 
-  <footer class="footer">認証情報は保存しません。ただし読み込み先URLには認証情報が含まれるため、共有画面や録画では注意してください。</footer>
+  <footer class="footer">認証情報は保存しません。ただし読み込み先URLには認証情報が含まれるため、信頼できる環境で利用してください。</footer>
 </body>
 </html>

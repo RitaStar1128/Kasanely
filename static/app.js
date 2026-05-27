@@ -346,7 +346,7 @@
 
   document.addEventListener("DOMContentLoaded", init);
 
-  window.diffsiteStatic = {
+  window.kasanely = {
     buildAuthUrl,
     normalizeUrl,
     updateViewport,

@@ -1,0 +1,27 @@
+# Kasanely
+
+> Static, no-build visual comparison tool for web pages.
+
+Kasanely is a Japanese, client-side HTML tool for comparing two web pages by URL. It is designed for checking visual differences between an existing page and a target page without a build step or server-side dependency.
+
+## Key Features
+
+- Side-by-side comparison of two web pages.
+- Overlay comparison with onion, swipe, and difference modes.
+- Full-page iframe display for long pages.
+- Vertical position adjustment for each page.
+- Horizontal position adjustment for the target page.
+- Basic authentication URL support by generating `https://user:pass@example.com/` style URLs in the browser.
+- Static deployment: open `index.html` directly or host the `static` directory as-is.
+
+## Important Limits
+
+- Kasanely runs entirely in the browser and cannot attach arbitrary `Authorization` headers to iframes.
+- Sites that block iframe embedding with `X-Frame-Options` or `Content-Security-Policy` cannot be previewed by a static-only tool.
+- Basic authentication credentials are embedded in the iframe URL while loading and should only be used in trusted environments.
+
+## Primary Files
+
+- [Application](./index.html): Main static HTML app.
+- [Styles](./styles.css): Visual layout and responsive behavior.
+- [Behavior](./app.js): URL handling, comparison modes, reload behavior, and position adjustment.
